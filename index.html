@@ -1,0 +1,45 @@
+<html>
+  <head>
+    <script src="/dist/main.js" defer></script>
+    <style>
+      #root {
+        border: 1px solid black;
+      }
+      .dropbtn {
+        background-color: black;
+        color: white;
+        padding: 8px;
+        border: none;
+      }
+      ul {
+        width: 25%;
+      }
+      li {
+        display: flex;
+        justify-content: space-between;
+      }
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f1f1f1;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+      }
+      .dropdown:hover .dropdown-content {
+        display: block;
+        background-color: black;
+      }
+      .dropdown:hover .dropbtn {
+        background-color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Movies 'R' Us</h1>
+    <div id="root"></div>
+  </body>
+</html>
