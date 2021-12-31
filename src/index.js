@@ -46,8 +46,18 @@ class App extends Component {
     }
   }
 
-  decrease(id) {
-    console.log("decrease" + id);
+  async decrease(movie) {
+    try {
+      movie = { ...movie, rating: movie.rating - 1 };
+      const updated = (await axios.put(`/api/movies/${movie.id}`, movie)).data;
+      console.log(updated);
+      store.dispatch({
+        type: "SUB",
+        updated,
+      });
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   //if using thunks, send id to thunk in store
@@ -78,7 +88,7 @@ class App extends Component {
                   <button onClick={() => this.increase(e)}>
                     Increase Rating
                   </button>
-                  <button onClick={() => this.decrease(e.id)}>
+                  <button onClick={() => this.decrease(e)}>
                     Decrease Rating
                   </button>
                   <button onClick={() => this.delete(e.id)}>
