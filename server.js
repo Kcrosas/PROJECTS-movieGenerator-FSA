@@ -9,6 +9,10 @@ const faker = require("faker");
 app.use("/dist", express.static(path.join(__dirname, "dist")));
 app.use("/media", express.static(path.join(__dirname, "media")));
 
+// Body parsing middleware (only needed for POST & PUT requests)
+app.use(express.json());
+//app.use(express.urlencoded({ extended: true })); // This line is only needed for older dependencies
+
 //Route to grab all movies
 app.get("/api/movies", async (req, res, next) => {
   try {
@@ -24,6 +28,23 @@ app.post("/api/movies", async (req, res, next) => {
     res.send(await Movie.newMovie());
   } catch (error) {
     next(error);
+  }
+});
+
+//Updates the movie
+app.put("/api/movies/:id", async (req, res, next) => {
+  try {
+    //finds the movie based on the id of the url
+
+    const movie = await Movie.findByPk(req.params.id);
+    console.log(JSON.stringify(movie) + "before update");
+    console.log(req.body);
+    await movie.update(req.body);
+    //Not needed because movie variable is updated automatically variable const updatedMovie = await Movie.findByPk(req.params.id);
+
+    res.send(movie);
+  } catch (err) {
+    next(err);
   }
 });
 

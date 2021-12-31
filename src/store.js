@@ -4,12 +4,22 @@ const initialState = {
   movies: [],
 };
 
+//have thunk here take id to delete using axios.delete
+
 const store = createStore((state = initialState, action) => {
   if (action.type === "FIRST_LOAD") {
     state = { ...state, movies: action.movies };
   }
   if (action.type === "PLUS") {
-    state = state;
+    state = {
+      ...state,
+      movies: state.movies.map((movie) => {
+        if (movie.id === action.updated.id) {
+          return action.updated;
+        }
+        return movie;
+      }),
+    };
   }
   if (action.type === "SUB") {
     state = state;

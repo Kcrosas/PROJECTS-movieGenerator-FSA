@@ -32,12 +32,25 @@ class App extends Component {
     });
   }
 
-  increase(id) {
-    console.log("increase" + id);
+  async increase(movie) {
+    try {
+      movie = { ...movie, rating: movie.rating + 1 };
+      const updated = (await axios.put(`/api/movies/${movie.id}`, movie)).data;
+      console.log(updated);
+      store.dispatch({
+        type: "PLUS",
+        updated,
+      });
+    } catch (err) {
+      console.log(err);
+    }
   }
+
   decrease(id) {
     console.log("decrease" + id);
   }
+
+  //if using thunks, send id to thunk in store
   async delete(id) {
     try {
       await axios.delete(`/api/movies/${id}`);
@@ -46,13 +59,12 @@ class App extends Component {
         id,
       });
     } catch (err) {
-      console.error(err);
+      console.log(err);
     }
   }
 
   render() {
     const { movies } = this.state;
-    console.log(movies);
     return (
       <div>
         <button onClick={this.newMovie}>Press for new movie</button>
@@ -63,7 +75,7 @@ class App extends Component {
               <div className="dropdown">
                 <button className="dropbtn">Select Option</button>
                 <div className="dropdown-content">
-                  <button onClick={() => this.increase(e.id)}>
+                  <button onClick={() => this.increase(e)}>
                     Increase Rating
                   </button>
                   <button onClick={() => this.decrease(e.id)}>
