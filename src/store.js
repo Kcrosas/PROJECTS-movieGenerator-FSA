@@ -15,7 +15,11 @@ const store = createStore((state = initialState, action) => {
     state = state;
   }
   if (action.type === "DELETE") {
-    state = state;
+    //filters the array of movies and only returns movies that do not have an id equal to the id of the movie that was just deleted
+    state = {
+      ...state,
+      movies: state.movies.filter((e) => e.id !== action.id),
+    };
   }
   if (action.type === "NEW") {
     state = { ...state, movies: [...state.movies, action.movie] };

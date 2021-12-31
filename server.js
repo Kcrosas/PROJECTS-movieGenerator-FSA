@@ -7,6 +7,7 @@ const faker = require("faker");
 //Express routes
 
 app.use("/dist", express.static(path.join(__dirname, "dist")));
+app.use("/media", express.static(path.join(__dirname, "media")));
 
 //Route to grab all movies
 app.get("/api/movies", async (req, res, next) => {
@@ -29,9 +30,9 @@ app.post("/api/movies", async (req, res, next) => {
 //Route deletes movie
 app.delete("/api/movies/:id", async (req, res) => {
   try {
-    console.log(req.params.id);
-    await Movie.findByIdAndDelete(req.params.id);
-    return res.status(200).json({ success: true, msg: "Product Deleted" });
+    const movieDelete = await Movie.findByPk(req.params.id);
+    movieDelete.destroy();
+    res.sendStatus(204);
   } catch (err) {
     console.error(err);
   }
@@ -43,6 +44,7 @@ app.get("/", (req, res) => res.sendFile(path.join(__dirname, "index.html")));
 
 //For use with interacting with the db
 const Sequelize = require("sequelize");
+const { applyMiddleware } = require("redux");
 const { STRING, INTEGER } = Sequelize;
 const conn = new Sequelize(
   process.env.DATABASE_URL || "postgres://localhost/movies"

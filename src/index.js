@@ -9,6 +9,8 @@ class App extends Component {
     super();
     this.state = store.getState();
   }
+
+  //When the component first mounts
   async componentDidMount() {
     //Ties this component to the store
     store.subscribe(() => {
@@ -21,6 +23,7 @@ class App extends Component {
       movies,
     });
   }
+  //Function that initiates a new movie
   async newMovie() {
     const movie = (await axios.post("/api/movies")).data;
     store.dispatch({
@@ -37,7 +40,11 @@ class App extends Component {
   }
   async delete(id) {
     try {
-      const res = await axios.delete(`/api/movies/${id}`);
+      await axios.delete(`/api/movies/${id}`);
+      store.dispatch({
+        type: "DELETE",
+        id,
+      });
     } catch (err) {
       console.error(err);
     }
