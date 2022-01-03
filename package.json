@@ -25,7 +25,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
     "build:dev": "npm run build -- --watch --mode=development",
-    "start:dev": "npm run build:dev & nodemon server --ignore dist/ --ignore src/"
+    "start:dev": "npm run build:dev & nodemon server --ignore dist/ --ignore src/",
+    "start": "webpack --mode=production"
   },
   "keywords": [],
   "author": "",
