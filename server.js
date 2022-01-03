@@ -37,11 +37,9 @@ app.put("/api/movies/:id", async (req, res, next) => {
     //finds the movie based on the id of the url
 
     const movie = await Movie.findByPk(req.params.id);
-    console.log(JSON.stringify(movie) + "before update");
-    console.log(req.body);
     await movie.update(req.body);
     //Not needed because movie variable is updated automatically variable const updatedMovie = await Movie.findByPk(req.params.id);
-
+    console.log(JSON.stringify(movie));
     res.send(movie);
   } catch (err) {
     next(err);
@@ -76,19 +74,25 @@ const Movie = conn.define("movie", {
   rating: {
     type: INTEGER,
     defaultValue: 3,
+    validate: {
+      max: 5,
+      min: 1,
+    },
   },
 });
 
 Movie.newMovie = function () {
-  return this.create({ name: faker.lorem.word().toUpperCase() });
+  const name = faker.lorem.word();
+  const nameMod = name.charAt(0).toUpperCase() + name.slice(1);
+  return this.create({ name: nameMod });
 };
 
 const syncAndSeed = async () => {
   await conn.sync({ force: true });
   await Promise.all([
-    Movie.create({ name: "Fullstack vs FlatIron", rating: 5 }),
-    Movie.create({ name: "Prof Returns", rating: 5 }),
-    Movie.create({ name: "2110: The A Team", rating: 5 }),
+    Movie.create({ name: "Fullstack vs FlatIron", rating: 3 }),
+    Movie.create({ name: "Prof Returns", rating: 3 }),
+    Movie.create({ name: "2110: The A Team", rating: 3 }),
   ]);
 };
 
@@ -97,7 +101,7 @@ const init = async () => {
     //seed the db
     await syncAndSeed();
     //Port configurations
-    const port = process.env.PORT || 3000;
+    const port = process.env.PORT || 8000;
     app.listen(port, () => console.log(`ACTIVE on ${port}`));
   } catch (error) {
     console.log(error);

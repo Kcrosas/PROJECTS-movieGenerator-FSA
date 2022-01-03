@@ -34,6 +34,7 @@ class App extends Component {
 
   async increase(movie) {
     try {
+      console.log(`line 37 ${JSON.stringify(movie)}`);
       movie = { ...movie, rating: movie.rating + 1 };
       const updated = (await axios.put(`/api/movies/${movie.id}`, movie)).data;
       console.log(updated);
@@ -73,32 +74,93 @@ class App extends Component {
     }
   }
 
+  sortByName(a, b) {
+    return a.name.localeCompare(b.name);
+  }
+  sortByRating(a, b) {
+    return b.rating - a.rating;
+  }
+
   render() {
     const { movies } = this.state;
+    movies.sort(this.sortByName);
+    const averageMap = movies.map((e) => e.rating);
+    const average = (
+      averageMap.reduce((a, b) => a + b, 0) / movies.length
+    ).toFixed(2);
     return (
       <div>
-        <button onClick={this.newMovie}>Press for new movie</button>
-        <ul>
-          {movies.map((e) => (
-            <li key={e.id}>
-              {e.name} Rating: {e.rating}
-              <div className="dropdown">
-                <button className="dropbtn">Select Option</button>
-                <div className="dropdown-content">
-                  <button onClick={() => this.increase(e)}>
-                    Increase Rating
-                  </button>
-                  <button onClick={() => this.decrease(e)}>
-                    Decrease Rating
-                  </button>
-                  <button onClick={() => this.delete(e.id)}>
-                    Delete the film
-                  </button>
-                </div>
-              </div>
-            </li>
-          ))}
-        </ul>
+        <table>
+          <tbody>
+            <tr>
+              <td colSpan="100%">
+                <h2>Movie List</h2>
+              </td>
+            </tr>
+            <tr>
+              <td>Average Rating: </td>
+              <td className="spec">{average}</td>
+            </tr>
+            <tr>
+              <td>Number of Films: </td>
+              <td className="spec">{movies.length}</td>
+            </tr>
+            <tr>
+              <td>Press for new movie</td>
+              <td className="spec">
+                <button onClick={this.newMovie}>New movie</button>
+              </td>
+            </tr>
+            <tr>
+              <td colSpan="100%">
+                <hr />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <table>
+          <tbody>
+            <tr id="headerName">
+              <td>Movie</td>
+              <td>Rating</td>
+              <td style={{ textAlign: "right" }}>Settings</td>
+            </tr>
+            <tr>
+              <td colSpan="100%">
+                <hr />
+              </td>
+            </tr>
+            {movies.map((e) => (
+              <tr key={e.id}>
+                <td>{e.name}</td>
+                <td id="tdRating">{e.rating}</td>
+                <td style={{ textAlign: "right" }}>
+                  <div className="dropdown">
+                    <button className="dropbtn">Select Option</button>
+                    <div className="dropdown-content">
+                      <button
+                        disabled={e.rating === 5}
+                        onClick={() => this.increase(e)}
+                      >
+                        Increase Rating
+                      </button>
+                      <button
+                        disabled={e.rating === 1}
+                        onClick={() => this.decrease(e)}
+                      >
+                        Decrease Rating
+                      </button>
+                      <button onClick={() => this.delete(e.id)}>
+                        Delete the film
+                      </button>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     );
   }
