@@ -102,7 +102,7 @@ const init = async () => {
     await syncAndSeed();
     //Port configurations
 
-    app.listen(PORT, () => console.log(`ACTIVE on ${port}`));
+    app.listen(PORT, () => console.log(`ACTIVE on ${PORT}`));
   } catch (error) {
     console.log(error);
   }
