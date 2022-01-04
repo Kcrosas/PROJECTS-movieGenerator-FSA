@@ -95,13 +95,13 @@ const syncAndSeed = async () => {
     Movie.create({ name: "2110: The A Team", rating: 3 }),
   ]);
 };
-
+let port = process.env.PORT || 8080;
 const init = async () => {
   try {
     //seed the db
     await syncAndSeed();
     //Port configurations
-    let port = process.env.PORT || 8080;
+
     app.listen(port, () => console.log(`ACTIVE on ${port}`));
   } catch (error) {
     console.log(error);
