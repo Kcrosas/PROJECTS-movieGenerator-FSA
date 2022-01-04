@@ -101,7 +101,7 @@ const init = async () => {
     //seed the db
     await syncAndSeed();
     //Port configurations
-    const port = process.env.PORT || 8000;
+    let port = process.env.PORT || 8000;
     app.listen(port, () => console.log(`ACTIVE on ${port}`));
   } catch (error) {
     console.log(error);
