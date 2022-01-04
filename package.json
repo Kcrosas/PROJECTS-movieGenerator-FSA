@@ -27,7 +27,7 @@
     "build:dev": "npm run build -- --watch --mode=development",
     "start:dev": "npm run build:dev & nodemon server --ignore dist/ --ignore src/",
     "start": "node server.js", 
-  "heroku-postbuild": "webpack -p" 
+  "heroku-postbuild": "webpack -P" 
   },
   "keywords": [],
   "author": "",
