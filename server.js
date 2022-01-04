@@ -65,7 +65,7 @@ app.get("/", (req, res) => res.sendFile(path.join(__dirname, "index.html")));
 const Sequelize = require("sequelize");
 const { applyMiddleware } = require("redux");
 const { STRING, INTEGER } = Sequelize;
-const conn = new Sequelize(
+let conn = new Sequelize(
   process.env.DATABASE_URL || "postgres://localhost/movies"
 );
 
