@@ -83,7 +83,7 @@ class App extends Component {
 
   render() {
     const { movies } = this.state;
-    movies.sort(this.sortByName);
+    movies.sort(this.sortByName).sort(this.sortByRating);
     const averageMap = movies.map((e) => e.rating);
     const average = (
       averageMap.reduce((a, b) => a + b, 0) / movies.length
